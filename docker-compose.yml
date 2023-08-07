@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./backend/docker
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend/:/usr/src/app/
+    ports:
+      - 15000:8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=_django
+      - POSTGRES_PASSWORD=_django
+      - POSTGRES_DB=mina
+
+volumes:
+  postgres_data:
